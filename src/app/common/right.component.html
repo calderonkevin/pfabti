@@ -1,0 +1,31 @@
+<div class="cols-xs-12 cols-sm-12 cols-md-12 cols-lg-8">
+        <button type="submit" class="btn btn-success" (click)="addItem()">Agregar</button>
+        <button type="submit" class="btn btn-success" (click)="consoleLog()">Console</button>
+        <input type="text" name="dato" value="{{dato}}">
+        <div class="alert alert-primary" role="alert" (click)="addItem()"></div>
+        
+        <table class="table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>email</th>
+                            <th>Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>                          
+                          <tr *ngFor="let employee of employees; let i = index">
+                                        <th scope="row">{{employee.id}}</th>
+                                        <td>{{employee.name}}</td>
+                                        <td>{{employee.position}}</td>
+                                        <td>{{employee.email}}</td>
+                                        <td>        
+                                            <button type="submit" class="btn btn-info" (click)="addItem()">+</button>
+                                            <button type="submit" class="btn btn-info" (click)="addItem()">-</button>                                          
+                                            <button type="submit" class="btn btn-info" (click)="addItem()">D</button>
+                                        </td>                                        
+                                      </tr>                     
+                        </tbody>
+                      </table>
+</div>

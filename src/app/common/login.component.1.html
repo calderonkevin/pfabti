@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="src/image/png" href="images/favicon.png" />
+    <link rel="stylesheet" href="src/css/bootstrap.min.css">
+    <link rel="stylesheet" href="src/css/theme.css">
+    <link rel="stylesheet" href="src/css/font-awesome.min.css">
+    <title><h1>{{title}}</h1></title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+</head>
+
+<body class="loginPage">
+    <header class="d-flex justify-content-between align-items-center">
+        <div class="logo">
+            <img width="111" height="37" src="src/images/logo.png" alt="Fabti">
+        </div>
+        <ul class="list-unstyled user-nav">
+            <li><span>POS V. 1.0</span></li>
+        </ul>
+    </header>
+    <div class="formWrap">
+        <h1>{{title}}</h1>
+        <div class="container">
+                <div class="alert alert-{{status}}" *ngIf="codError!=-999">            
+                        {{msgError}}
+                    </div>                    
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="form-horizontal" role="form"  id="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group has-danger">
+                            <label class="sr-only" for="email">E-Mail Address</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">@</div>
+                                </div>                               
+
+                                <input type="email" name="email" #email="ngModel" [(ngModel)]="emailForm" class="form-control rounded-right" placeholder="email" required autofocus>                                
+                                <div class="invalid-feedback" *ngIf="!email.valid && email.touched">
+                                    El email es obligatorio.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="sr-only" for="password">Password</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-key"></i></div>
+                                </div>                                
+                                <input type="password" name="password" #password="ngModel" [(ngModel)]="pwdForm"  class="form-control rounded-right" placeholder="Contraseña" required>
+                                <div class="invalid-feedback" *ngIf="!password.valid && password.touched">
+                                        La contraseña es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-sign-in"></i> Ingresar
+                        </button>                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>    
+</body>
+
+</html>

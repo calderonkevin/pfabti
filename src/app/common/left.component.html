@@ -1,0 +1,12 @@
+<div class="cols-xs-12 cols-sm-12 cols-md-12 cols-lg-4">        
+    <h2>{{ title }}</h2>
+    <button type="submit" class="btn btn-success" (click)="addItem()">Agregar</button>
+    <input type="text" name="dato" value="{{dato}}">
+    
+    <div class="alert alert-primary" role="alert" (click)="addItem()">
+            
+    </div>
+    <ul>
+        <li *ngFor="let item of items">{{item}}</li>
+    </ul>
+    </div>

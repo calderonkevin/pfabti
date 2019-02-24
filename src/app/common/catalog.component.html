@@ -1,0 +1,168 @@
+<form #impresionForm="ngForm" (ngSubmit)="onSubmitImprimir()" style="display: none;">
+      <input type="text" name="jsonImpresion" [(ngModel)]="jsonImpresion" required autocomplete="off">
+    <button type="submit" class="btn btn-primary">Aceptar</button>
+</form>
+
+<ng-template #template>
+  <form #modalForm="ngForm" (ngSubmit)="onSubmitUpdateModal()">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{modalTitle}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+     <span aria-hidden="true">&times;</span>
+   </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" name="modalCodpro" [(ngModel)]="modalCodpro" class="form-control" required autocomplete="off">
+      <div>
+        <span>Precio</span>
+        <input type="text" name="modalPrice" [(ngModel)]="modalPunit" class="form-control" required autocomplete="off">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Aceptar</button>
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()">Cancelar</button>
+    </div>
+  </form>
+</ng-template>
+
+
+<header class="d-flex justify-content-between align-items-center">
+  <div class="logo">
+    <img width="111" height="37" src="src/images/logo.png" alt="Fabti">
+  </div>
+  <ul class="list-unstyled user-nav">
+    <li><span><strong>{{identity.payload.data.dessucursal}}</strong></span></li>
+    <li><span>{{identity.payload.data.nombres}} {{identity.payload.data.apellidos}}</span></li>
+    <li><a class="btn pointer" (click)="logout()">Cerrar</a></li>
+  </ul>
+</header>
+
+<div class="container-fluid content">
+  <div class="row h100">
+    <aside class="col-md-6 col-xl-4">
+      <div class="table-wrap">
+        <table class="table">
+          <tbody>
+
+            <tr *ngIf="invoice.length == 0">
+              <td>
+                Agregue sus productos
+              </td>
+            </tr>
+
+            <tr *ngFor="let invoItem of invoice; let i = index">
+              <td class="delete">
+                <button (click)="invoItemDelete(i)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+              </td>
+              <td class="delete">
+                <button (click)="openModal(template, i)">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </button>
+              </td>
+              <td>
+                {{invoItem.name}}
+                <div class="small">
+                  <span style="display: none;">small</span>
+                  <span>{{invoItem.descolor}}</span>
+                  <span style="display: none;">{{invoItem.serpro}}</span>
+                </div>
+              </td>
+              <td>{{invoItem.price}}
+                <span class="small date active" style="display: none;">20/12/2015</span>
+              </td>
+              <td>
+                <div class="cantidades">
+                  <div class="fields">
+                    <button (click)="invoItemMenos(i)">-</button>
+                    <input [(ngModel)]="invoItem.cantid" type="text" name="cantid" autocomplete="off">
+                    <button (click)="invoItemMas(i)">+</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+      </div>
+      <div class="footer-aside">
+        <div class="total text-right">
+          <strong>Total: S/. {{ invoGetTotal() }}</strong>
+          <small style="display: none;">Impuestos: S/. 1,26</small>
+        </div>
+        <ul class="list-unstyled d-flex justify-content-between acciones">
+          <li>
+            <button class="btn">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <span>{{invoiceCab.nomcom}}</span>
+                        </button>
+          </li>
+          <li>
+            <button [disabled]="loading" class="btn btn-success" (click)="crearTicket()">
+                            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                            <span>Pagar e imprimir</span>                            
+                        </button>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+
+
+
+
+
+    <div class=" col-md-6 col-xl-8 rightArea">
+      <div class="row catbar">
+        <div class="col-md-12 col-lg-8 navigation">
+
+          <div id="cats" class="owl-carousel">
+            <div class="item active" style="width: 140px;">
+              <a href="javascript:void(0);" (click)="onSeleccionarCat(0)">VER TODOS</a>
+            </div>
+            <div class="item" *ngFor="let item of itemsCat; let i = index">
+              <a href="javascript:void(0);" (click)="onSeleccionarCat(item.code)">{{item.name}}</a>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-4">
+          <form>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="Buscar Productos" (input)="onSearchChange($event.target.value)">
+
+            </div>
+          </form>
+        </div>
+      </div>
+      <ul class="list-unstyled item-list ">
+
+        <li *ngFor="let item of items; let i = index">
+          <button (click)="addItem(item.codpro, item.name, item.price, item.codcol, item.descolor, item.talla, item.serpro, item.fecvendet)">
+                        <span class="price">{{item.descolor}} S/. {{item.price}}</span>
+                        <img src="src/images/pics.jpg" alt="">
+                        <span class="caption">{{item.name}}</span>                        
+                    </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+<!--
+<div class="alert alert-secondary" (click)="verproductos()">
+  click apara lista art
+</div>
+-->
+<iframe src="#" name="iframeImpresion" id="iframeImpresion" style="display:none;"> click apara lista art</iframe>
