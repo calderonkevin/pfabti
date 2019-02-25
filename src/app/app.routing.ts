@@ -2,7 +2,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 //Components
-import { LoginComponent } from './common/login.component';
+import { LoginComponent } from './login/login.component';
 import { CatalogComponent } from './common/catalog.component';
 import { ZnoexisteComponent } from './common/znoexiste.component';
 

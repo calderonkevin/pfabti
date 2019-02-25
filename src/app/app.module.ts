@@ -8,7 +8,7 @@ import { LeftComponent }  from './common/left.component';
 import { RightComponent }  from './common/right.component';
 import { FooterComponent }  from './common/footer.component';
 import { CatalogComponent }  from './common/catalog.component';
-import { LoginComponent }  from './common/login.component';
+import { LoginComponent }  from './login/login.component';
 import { ZnoexisteComponent }  from './common/znoexiste.component';
 
 import { ToastrModule } from 'ngx-toastr';
