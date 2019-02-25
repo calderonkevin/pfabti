@@ -144,13 +144,16 @@
           </form>
         </div>
       </div>
+
+     
+
       <ul class="list-unstyled item-list ">
 
-        <li *ngFor="let item of items; let i = index">
+        <li *ngFor="let item of productList; let i = index">
           <button (click)="addItem(item.codpro, item.name, item.price, item.codcol, item.descolor, item.talla, item.serpro, item.fecvendet)">
-                        <span class="price">{{item.descolor}} S/. {{item.price}}</span>
+                        <span class="price">{{item.descolor}} S/. {{item.pre}}</span>
                         <img src="src/images/pics.jpg" alt="">
-                        <span class="caption">{{item.name}}</span>                        
+                        <span class="caption">{{item.nompro}}</span>                        
                     </button>
         </li>
       </ul>

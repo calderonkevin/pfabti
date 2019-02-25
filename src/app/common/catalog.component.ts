@@ -1,12 +1,19 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 //import {AngularPrint } from './lib/angular-print';
+
+// model
+import { Product } from '../models/product';
+
 import { GLOBAL } from './services/global';
 import { LoginService } from './services/login.service';
+import { ProductService } from './services/product.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ToastrService } from 'ngx-toastr'
+import { element } from '@angular/core/src/render3/instructions';
+//import { exists } from 'fs';
 
 declare var jQuery:any;
 declare var $:any;
@@ -14,20 +21,10 @@ declare var $:any;
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
-  providers: [LoginService]
+  providers: [LoginService ]
 })
 export class CatalogComponent implements OnInit {
 
-  constructor(
-    private _route: ActivatedRoute,
-    private _router: Router,
-    private _loginService: LoginService,
-    private modalService: BsModalService,
-    private toastr: ToastrService
-  ) {
-    this.title = "Identificate";
-    this.verproductos();
-  }
   modalRef: BsModalRef;
   modalTitle: string;
   modalCodpro: string;
@@ -42,7 +39,39 @@ export class CatalogComponent implements OnInit {
     ignoreBackdropClick: true
   };
 
+  productList: Product[];
+
+  constructor(
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _loginService: LoginService,
+    private _productService: ProductService,
+    private modalService: BsModalService,
+    private toastr: ToastrService
+  ) {
+    this.title = "Identificate";
+    this.verproductos();
+  }
+  
+
   ngOnInit() {
+
+    this._productService.getProduct()
+    .snapshotChanges()
+    .subscribe(item => {
+        this.productList = [];
+        //console.log(item.length);
+        item.forEach(element =>{
+            let x = element.payload.toJSON();            
+            //console.log(element.key);
+            x["$key"] = element.key;
+            //console.log(element.key);
+            this.productList.push(x as Product);
+          });
+        });
+    
+    console.log("Firebase============");    
+    
     this.identity = this._loginService.getIdentity();    
     //this.invoiceCab = [{'codcli':'5','coddir':'0001','codper':'44001713','nomcom':'otros mas'}];
     this.invoiceCab = this._loginService.getDataDef();

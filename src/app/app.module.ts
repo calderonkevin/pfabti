@@ -14,6 +14,11 @@ import { ZnoexisteComponent }  from './common/znoexiste.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+//firebase
+import{ AngularFireModule} from 'angularfire2';
+import{ AngularFireDatabase, AngularFireDatabaseModule} from 'angularfire2/database';
+import { environment } from '../environments/environment';
+
 
 
 import { HttpModule } from '@angular/http';
@@ -22,12 +27,24 @@ import { routing, appRoutingProviders }  from './app.routing';
 
 import { ModalModule } from 'ngx-bootstrap';
 import { LoginService } from './common/services/login.service';
+import { ProductService } from './common/services/product.service';
 import { AdminGuard } from './common/services/admin.guard';
+
 
 @NgModule({
   declarations: [ AppComponent, HeaderComponent,  LeftComponent,  RightComponent,  FooterComponent ,  CatalogComponent, LoginComponent, ZnoexisteComponent ],
-  imports: [BrowserModule, FormsModule, HttpModule , routing, BrowserAnimationsModule, ModalModule.forRoot(), ToastrModule.forRoot()],
-  providers: [appRoutingProviders, LoginService, AdminGuard],
+  imports: [
+    BrowserModule, 
+    FormsModule, 
+    HttpModule , 
+    routing, 
+    BrowserAnimationsModule, 
+    ModalModule.forRoot(), 
+    ToastrModule.forRoot(), 
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
+  ],
+  providers: [appRoutingProviders, LoginService, ProductService, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
