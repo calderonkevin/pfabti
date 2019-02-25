@@ -150,10 +150,10 @@
       <ul class="list-unstyled item-list ">
 
         <li *ngFor="let item of productList; let i = index">
-          <button (click)="addItem(item.codpro, item.name, item.price, item.codcol, item.descolor, item.talla, item.serpro, item.fecvendet)">
-                        <span class="price">{{item.descolor}} S/. {{item.pre}}</span>
+          <button (click)="addItem(item.$key, item.nompro, item.pre, item.codcol, item.descolor, item.talla, item.serpro, item.fecvendet)">
+                        <span class="price">S/. {{item.pre}}</span>
                         <img src="src/images/pics.jpg" alt="">
-                        <span class="caption">{{item.nompro}}</span>                        
+                        <span class="caption">{{item.$key}} - {{item.nompro}}</span>                        
                     </button>
         </li>
       </ul>

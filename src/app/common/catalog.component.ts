@@ -50,7 +50,7 @@ export class CatalogComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.title = "Identificate";
-    this.verproductos();
+    //this.verproductos();
   }
   
 
@@ -127,7 +127,7 @@ export class CatalogComponent implements OnInit {
   ];
 
   
-  verproductos(): void {
+  verproductos55(): void {
 
     this._loginService.articulos().subscribe(
       response => {
